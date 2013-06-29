@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/jgraham909/bloggo/app/models"
+	"github.com/stunti/bloggo/app/models"
 	"github.com/jgraham909/revmgo"
 	"github.com/robfig/revel"
 )

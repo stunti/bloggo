@@ -8,6 +8,7 @@ import (
 	"labix.org/v2/mgo/bson"
 	"strings"
 	"time"
+  "fmt"
 )
 
 const trimLength = 300
@@ -36,7 +37,8 @@ func (article *Article) All(s *mgo.Session) []*Article {
 	query := coll.Find(nil).Sort("-Published").Limit(10)
 	query.All(&articles)
 
-	for i, a := range articles {
+	for  _, a := range articles {
+    /*
 		if a.Meta == nil {
 			a.Meta = make(map[string]interface{})
 		}
@@ -47,8 +49,26 @@ func (article *Article) All(s *mgo.Session) []*Article {
 		} else {
 			articles[i].Meta["teaser"] = template.HTML(string(blackfriday.MarkdownBasic([]byte(a.Body[0:len(a.Body)]))))
 		}
+    */
+    a.LoadRelated(s)
 	}
 	return articles
+}
+
+func (a *Article) LoadRelated(s *mgo.Session) {
+    fmt.Println("Meta start")
+    if a.Meta == nil {
+      a.Meta = make(map[string]interface{})
+    }
+    a.Meta["author"] = a.GetAuthor(s).String()
+    a.Meta["markdown"] = template.HTML(string(blackfriday.MarkdownBasic([]byte(a.Body))))
+    if len(a.Body) > trimLength {
+      a.Meta["teaser"] = template.HTML(string(blackfriday.MarkdownBasic([]byte(a.Body[0:trimLength]))))
+    } else {
+      a.Meta["teaser"] = template.HTML(string(blackfriday.MarkdownBasic([]byte(a.Body[0:len(a.Body)]))))
+    }
+    fmt.Println("Meta:", a.Meta)
+
 }
 
 func (article *Article) GetAuthor(s *mgo.Session) *User {
@@ -80,12 +100,15 @@ func (article *Article) GetById(s *mgo.Session, Id bson.ObjectId) *Article {
 	coll := a.Collection(s)
 	query := coll.FindId(Id)
 	query.One(a)
+  a.LoadRelated(s)
 
 	return a
 }
 
 func (article *Article) GetByIdString(s *mgo.Session, Id string) *Article {
 	ObjectId := bson.ObjectIdHex(Id)
+
+  fmt.Println("GetByIdString:", Id)
 	return article.GetById(s, ObjectId)
 }
 

@@ -1,0 +1,13 @@
+{{set . "title" "Articles"}}
+{{template "header.html" .}}
+
+<h4>{{.one.Title}}</h4>
+<span class="label date">{{.one.Posted}}</span>
+<span class="label author">By:</span> {{index .one.Meta "author"}}</span>
+{{if .one.Tags}}
+<span class="label tags">Tags:</span>
+<span class="label secondary">{{.one.Tags}}</span>
+{{end}}
+<p>{{index .one.Meta "markdown"}}</p>
+
+{{template "footer.html" .}}

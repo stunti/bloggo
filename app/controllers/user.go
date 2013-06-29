@@ -3,7 +3,7 @@ package controllers
 import (
 	"code.google.com/p/go.crypto/bcrypt"
 	"fmt"
-	"github.com/jgraham909/bloggo/app/models"
+	"github.com/stunti/bloggo/app/models"
 	"github.com/robfig/revel"
 	"labix.org/v2/mgo/bson"
 )

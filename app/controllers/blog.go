@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"github.com/jgraham909/bloggo/app/models"
+	"github.com/stunti/bloggo/app/models"
 	"github.com/robfig/revel"
 	"labix.org/v2/mgo/bson"
 	"time"
+  "fmt"
 )
 
 type Blog struct {
@@ -16,6 +17,18 @@ func (c Blog) Index() revel.Result {
 	articles := article.All(c.MongoSession)
 
 	return c.Render(articles)
+}
+
+func (c Blog) Show(IdBlog string) revel.Result {
+	article := new(models.Article)
+  fmt.Println("idBlog: ", IdBlog)
+	one := article.GetByIdString(c.MongoSession, IdBlog)
+  fmt.Println("blog: ", one)
+  if one == nil {
+    return c.NotFound("Not found: " + IdBlog)
+  } else {
+	  return c.Render(one)
+  }
 }
 
 func (c Blog) Add() revel.Result {
