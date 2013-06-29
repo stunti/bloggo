@@ -1,5 +1,5 @@
 package models
-
+ 
 import (
 	"github.com/robfig/revel"
 	"github.com/russross/blackfriday"

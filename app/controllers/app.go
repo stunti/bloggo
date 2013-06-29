@@ -1,5 +1,5 @@
 package controllers
-
+ 
 import (
 	"github.com/stunti/bloggo/app/models"
 	"github.com/jgraham909/revmgo"

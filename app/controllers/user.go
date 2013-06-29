@@ -1,5 +1,5 @@
 package controllers
-
+ 
 import (
 	"code.google.com/p/go.crypto/bcrypt"
 	"fmt"
